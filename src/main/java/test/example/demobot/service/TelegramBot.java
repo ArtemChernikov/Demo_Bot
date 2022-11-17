@@ -43,7 +43,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void startCommandExecute(long chatId, String username) {
-        String message = "Привет, " + username + ", наконец-то ты пришел!";
+        String message = "Привет, " + username + "! Как Ваши дела?";
         sendMessage(chatId, message);
     }
 
