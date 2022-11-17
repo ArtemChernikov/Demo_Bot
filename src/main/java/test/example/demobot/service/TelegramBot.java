@@ -1,4 +1,4 @@
-package test.example.demo_bot.service;
+package test.example.demobot.service;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
