@@ -10,7 +10,7 @@
     </parent>
     <groupId>test.example</groupId>
     <artifactId>Demo_Bot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Demo_Bot</name>
     <description>Demo_Bot</description>
     <properties>
