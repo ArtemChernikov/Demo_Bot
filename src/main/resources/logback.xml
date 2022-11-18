@@ -7,11 +7,11 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>/projects/Demo_Bot/logs/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
-            <!-- each archived file, size max 10MB -->
+            <!-- архивы не более 10MB -->
             <maxFileSize>10MB</maxFileSize>
-            <!-- total size of all archive files, if total size > 1GB, it will delete old archived file -->
+            <!-- общий размер всех архивных файлов, если общий размер > 1 GB, старый архивный файл будет удален. -->
             <totalSizeCap>1GB</totalSizeCap>
-            <!-- 60 days to keep -->
+            <!-- максимум 60 дней хранения архивных файлов -->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
 

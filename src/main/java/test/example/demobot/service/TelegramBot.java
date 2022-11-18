@@ -19,7 +19,7 @@ import test.example.demobot.config.ConfigBot;
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     /**
-     * Конфигурационный объект {@link ConfigBot}
+     * Поле конфигурационный объект {@link ConfigBot}
      */
     private final ConfigBot config;
 
