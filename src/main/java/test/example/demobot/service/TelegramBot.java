@@ -1,5 +1,6 @@
 package test.example.demobot.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,6 +13,7 @@ import test.example.demobot.config.ConfigBot;
  * @version 1.0
  * @since 17.11.2022
  */
+@Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     private final ConfigBot config;
@@ -54,7 +56,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-
+            log.error("Произошла ошибка " + e.getMessage());
         }
     }
 }
