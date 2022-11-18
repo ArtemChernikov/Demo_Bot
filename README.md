@@ -19,9 +19,8 @@
 - Git
 
 ## Сборка и запуск<br>
-- подключиться к Telegram-боту: 
-<a href="https://t.me/Test_example_hi_bot" target="blank"><img src="https://img.icons8.com/clouds/50/000000/telegram-app.png"/></a>
-- для сборки `mvn install`<br>
+- подключиться к Telegram-боту `t.me/Test_example_hi_bot`
+- для сборки `mvn install`
 - для запуска`java -jar target/Demo_Bot-1.0.jar`
 
 ## Как использовать<br>
