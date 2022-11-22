@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import test.example.demobot.config.ConfigBot;
+import test.example.demobot.models.Post;
 
 /**
  * Класс описывает модель Telegram-бота
@@ -23,8 +24,11 @@ public class TelegramBot extends TelegramLongPollingBot {
      */
     private final ConfigBot config;
 
-    public TelegramBot(ConfigBot config) {
+    private final LentaParser lentaParser;
+
+    public TelegramBot(ConfigBot config, LentaParser lentaParser) {
         this.config = config;
+        this.lentaParser = lentaParser;
     }
 
     /**
@@ -61,6 +65,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
             switch (userMessageText) {
                 case "/start" -> startCommandExecute(chatId, update.getMessage().getChat().getUserName());
+                case "Новости" -> newsCommandExecute(chatId, lentaParser.parseLastPost());
                 default -> sendMessage(chatId, "Извините, данная команда не поддерживается.");
             }
         }
@@ -75,6 +80,24 @@ public class TelegramBot extends TelegramLongPollingBot {
     private void startCommandExecute(long chatId, String username) {
         String message = "Привет, " + username + "! Как Ваши дела?";
         sendMessage(chatId, message);
+    }
+
+    private void newsCommandExecute(long chatId, Post post) {
+        StringBuilder message = new StringBuilder()
+                .append("Категория: ")
+                .append(post.getCategory())
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("Название: ")
+                .append(post.getTitle())
+                .append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("Краткое описание: ")
+                .append(post.getDescription())
+                .append(System.lineSeparator())
+                .append("Ссылка на источник: ")
+                .append(post.getLink());
+        sendMessage(chatId, message.toString());
     }
 
     /**
