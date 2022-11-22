@@ -29,14 +29,17 @@ public class LentaParser implements FeedParser {
         Post post = null;
         try {
             SyndFeed syndFeed = syndFeedInput.build(new XmlReader(new URL(LINK)));
-            SyndEntry lastPost = (SyndEntry) syndFeed.getEntries().get(0);
-            post = new Post(lastPost.getAuthor(), lastPost.getTitle(),
-                    ((SyndCategory) lastPost.getCategories().get(0)).getName(), lastPost.getDescription().getValue(),
-                    lastPost.getLink(), lastPost.getPublishedDate());
+            post = createPost((SyndEntry) syndFeed.getEntries().get(0));
         } catch (FeedException | IOException e) {
             log.error("Произошла ошибка " + e.getMessage());
         }
         return post;
+    }
+
+    private Post createPost(SyndEntry post) {
+        return new Post(post.getAuthor(), post.getTitle(),
+                ((SyndCategory) post.getCategories().get(0)).getName(), post.getDescription().getValue(),
+                post.getLink(), post.getPublishedDate());
     }
 
 }
