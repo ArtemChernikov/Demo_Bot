@@ -5,15 +5,20 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import test.example.demobot.config.ConfigBot;
 import test.example.demobot.models.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Класс описывает модель Telegram-бота
  *
  * @author Artem Chernikov
- * @version 1.0
+ * @version 1.1
  * @since 17.11.2022
  */
 @Slf4j
@@ -53,8 +58,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     /**
      * Метод используется для взаимодействия пользователя с ботом
-     * На данный момент присутствует только функция "/start"
-     * Switch добавлен намеренно, для дальнейшего расширения взаимодействий
+     * 1. Команда "/start" - выполняется приветствие
+     * 2. Команда "Новости" - загружается последняя новость с сайта "<a href="https://lenta.ru/rss"></a>"
      *
      * @param update - обновление со стороны пользователя чата {@link Update}
      */
@@ -73,6 +78,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     /**
      * Метод используется для ответа бота пользователю на команду "/start"
+     * Выводит приветствие
      *
      * @param chatId   - id чата пользователя
      * @param username - имя пользователя
@@ -82,6 +88,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage(chatId, message);
     }
 
+    /**
+     * Метод используется для ответа бота пользователю на команду "Новости"
+     * Выводит последнюю новость с сайта "<a href="https://lenta.ru/rss"></a>" в специальном формате
+     *
+     * @param chatId - id чата пользователя
+     * @param post   - новость
+     */
     private void newsCommandExecute(long chatId, Post post) {
         StringBuilder message = new StringBuilder()
                 .append("Категория: ")
@@ -110,10 +123,43 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText(message);
+        /* Добавляем клавиатуру */
+        addKeyboard(sendMessage);
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             log.error("Произошла ошибка " + e.getMessage());
         }
+    }
+
+    /**
+     * Метод используется для добавления клавиатуры с кнопками к сообщению
+     *
+     * @param sendMessage - отправляемое сообщение от Telegram-бота
+     */
+    private void addKeyboard(SendMessage sendMessage) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        List<KeyboardRow> buttons = new ArrayList<>();
+        addButton(buttons, "Новости");
+        replyKeyboardMarkup.setKeyboard(buttons);
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+    }
+
+    /**
+     * Метод используется для добавления кнопки к клавиатуре пользователя
+     *
+     * @param buttons    - список кнопок
+     * @param buttonName - название кнопки
+     * @return - возвращает boolean (успешно добавилась кнопка или нет)
+     */
+    private boolean addButton(List<KeyboardRow> buttons, String buttonName) {
+        KeyboardRow row = new KeyboardRow();
+        row.add(buttonName);
+        if (buttons.contains(row)) {
+            return false;
+        }
+        buttons.add(row);
+        return true;
     }
 }
