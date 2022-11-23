@@ -1,7 +1,8 @@
 package test.example.demobot.interfaces;
 
+import test.example.demobot.models.Post;
+
 /**
- * Маркерный интерфейс
  * Используется для реализации классами-парсерами сайтов
  *
  * @author Artem Chernikov
@@ -9,4 +10,5 @@ package test.example.demobot.interfaces;
  * @since 17.11.2022
  */
 public interface FeedParser {
+    Post parseLastPost();
 }

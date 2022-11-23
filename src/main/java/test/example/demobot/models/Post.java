@@ -1,9 +1,12 @@
 package test.example.demobot.models;
 
 import lombok.Data;
+
 import java.util.Date;
 
 /**
+ * Класс описывает модель новости (поста) с сайта
+ *
  * @author Artem Chernikov
  * @version 1.0
  * @since 21.11.2022

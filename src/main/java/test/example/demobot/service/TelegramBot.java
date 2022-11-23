@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import test.example.demobot.config.ConfigBot;
+import test.example.demobot.interfaces.FeedParser;
 import test.example.demobot.models.Post;
 
 import java.util.ArrayList;
@@ -28,12 +29,14 @@ public class TelegramBot extends TelegramLongPollingBot {
      * Поле конфигурационный объект {@link ConfigBot}
      */
     private final ConfigBot config;
+    /**
+     * Поле парсер сайта
+     */
+    private final FeedParser parser;
 
-    private final LentaParser lentaParser;
-
-    public TelegramBot(ConfigBot config, LentaParser lentaParser) {
+    public TelegramBot(ConfigBot config, FeedParser parser) {
         this.config = config;
-        this.lentaParser = lentaParser;
+        this.parser = parser;
     }
 
     /**
@@ -70,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
             switch (userMessageText) {
                 case "/start" -> startCommandExecute(chatId, update.getMessage().getChat().getUserName());
-                case "Новости" -> newsCommandExecute(chatId, lentaParser.parseLastPost());
+                case "Новости" -> newsCommandExecute(chatId, parser.parseLastPost());
                 default -> sendMessage(chatId, "Извините, данная команда не поддерживается.");
             }
         }

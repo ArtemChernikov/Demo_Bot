@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
+ * Класс описывает модель парсера новостей с сайта "<a href="https://lenta.ru/rss"></a>".
+ *
  * @author Artem Chernikov
  * @version 1.0
  * @since 21.11.2022
@@ -22,8 +24,17 @@ import java.net.URL;
 @Component
 @Slf4j
 public class LentaParser implements FeedParser {
+    /**
+     * Полее ссылка сайта откуда производится парсинг
+     */
     private static final String LINK = "https://lenta.ru/rss";
 
+    /**
+     * Метод используется для парсинга последней новости с сайта {@link LentaParser#LINK}
+     *
+     * @return - возвращает пост {@link Post}
+     */
+    @Override
     public Post parseLastPost() {
         SyndFeedInput syndFeedInput = new SyndFeedInput();
         Post post = null;
@@ -36,6 +47,12 @@ public class LentaParser implements FeedParser {
         return post;
     }
 
+    /**
+     * Метод используется для создания поста {@link Post} при парсинге
+     *
+     * @param post - возвращает извлеченную с сайта новость
+     * @return - возвращает пост {@link Post}
+     */
     private Post createPost(SyndEntry post) {
         return new Post(post.getAuthor(), post.getTitle(),
                 ((SyndCategory) post.getCategories().get(0)).getName(), post.getDescription().getValue(),
